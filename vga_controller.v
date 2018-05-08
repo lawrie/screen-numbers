@@ -52,20 +52,19 @@ module vga_controller (
 	// Pixel clock.
     wire px_clk;
 
-    SB_PLL40_CORE #(.FEEDBACK_PATH("SIMPLE"),
-                    .PLLOUT_SELECT("GENCLK"),
-                    .DIVR(4'b0000),
-                    .DIVF(7'b1010011),
-                    .DIVQ(3'b101),
-                    .FILTER_RANGE(3'b001),
-            )
-            uut
-            (
-                    .REFERENCECLK(clk),
-                    .PLLOUTCORE(px_clk),
-                    .RESETB(1'b1),
-                    .BYPASS(1'b0)
-              );
+
+    SB_PLL40_CORE #(
+                .FEEDBACK_PATH("SIMPLE"),
+                .DIVR(4'b1001),         // DIVR =  9
+                .DIVF(7'b1100100),      // DIVF = 100
+                .DIVQ(3'b101),          // DIVQ =  5
+                .FILTER_RANGE(3'b001)   // FILTER_RANGE = 1
+        ) uut (
+                .RESETB(1'b1),
+                .BYPASS(1'b0),
+                .REFERENCECLK(clk),
+                .PLLOUTCORE(px_clk)
+                );
 
     /*
     http://www.epanorama.net/faq/vga2rgb/calc.html
